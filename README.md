@@ -23,7 +23,7 @@ For basic usage just include the ckeditor gem:
 use the latest version from Github:
 
 ```
-gem 'ckeditor', , :git => 'git://github.com/tanoku/redcarpet.git'
+gem 'ckeditor', , :git => 'https://github.com/alishahpakneeds/ckeditor-bootstrap.git'
 ```
 
 For file upload support, you must generate the necessary file storage models.
