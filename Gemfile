@@ -9,6 +9,8 @@ platforms :ruby do
 
   group :development do
     gem 'unicorn', '~> 4.0.1'
+    gem 'sass-rails', '~> 5.0'
+    gem 'bootstrap-sass', '~> 3.3.2'
   end
 
   group :development, :test do

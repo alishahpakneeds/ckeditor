@@ -1,7 +1,7 @@
-= content_tag(:div, :id => dom_id(asset), :class => "gal-item", :"data-url" => image_path(asset.url_content)) do
+= content_tag(:div, :id => dom_id(asset), :class => "gal-item col-lg-4 thumb", :"data-url" => image_path(asset.url_content)) do
   = link_to image_tag('ckeditor/filebrowser/images/gal_del.png', :title => I18n.t('ckeditor.buttons.delete')), polymorphic_path(asset, :format => :json),:remote => true,:method => :delete,:data => {:confirm => t('ckeditor.confirm_delete')},:class => "fileupload-cancel gal-del"
   .fileupload-file.gal-inner-holder
-    .img= image_tag(asset.url_thumb, :title => asset.filename)
+    .img.thumbnail= image_tag(asset.url_thumb, :title => asset.filename,:class=>'img-responsive')
     .img-data
       .img-name= asset.filename
       .time-size

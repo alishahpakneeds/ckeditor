@@ -11,7 +11,7 @@ $.QueryString = (function(a) {
 })(window.location.search.substr(1).split('&'))
 
 $(document).ready(function(){
-  var selector = "div.gal-item div.gal-inner-holder";
+  var selector = "div.col-lg-12.picture_container  .panel-body";
 
   $(document)
     .on('mouseover', selector, function(e){
@@ -32,7 +32,7 @@ $(document).ready(function(){
 
   var endlessScroll = $.endlessScroll({
     container: ".fileupload-list",
-    entity: ".gal-item",
+    entity: ".gal-item.col-lg-4.thumb",
     scrollPadding: 100
   });
 
@@ -65,7 +65,7 @@ qq.FileUploaderInput = function(o){
             button: 'fileupload-button',
             drop: 'fileupload-drop-area',
             dropActive: 'fileupload-drop-area-active',
-            list: 'fileupload-list',
+            list: 'fileupload-list div.col-lg-12.picture_container .panel-body',
             preview: 'fileupload-preview',
 
             file: 'fileupload-file',
@@ -182,9 +182,11 @@ qq.extend(qq.FileUploaderInput.prototype, {
             asset.controller = (asset.type !== undefined && asset.type.toLowerCase() == "ckeditor::picture" ? "pictures" : "attachment_files");
 
             $(item).replaceWith($(this._options.template_id).tmpl(asset));
+            $(item).addClass("col-lg-4");
         } else {
             qq.addClass(item, this._classes.fail);
         }
+
     },
     _addToList: function(id, fileName){
         if (this._listElement) {
