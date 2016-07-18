@@ -23,7 +23,7 @@ For basic usage just include the ckeditor gem:
 use the latest version from Github:
 
 ```
-gem 'ckeditor', , :git => 'https://github.com/alishahpakneeds/ckeditor-bootstrap.git'
+gem 'ckeditor', , :git => 'https://github.com/alishahpakneeds/ckeditor.git',:branch => "bootstrap"
 ```
 
 Initialy it has the support of  [ckeditor as normal](https://github.com/galetahub/ckeditor).but in future its going to be reponsive interfaces , specially photo gallery

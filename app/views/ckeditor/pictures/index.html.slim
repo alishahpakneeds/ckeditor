@@ -1,24 +1,26 @@
 .container
-  #fileupload.gal-holder
-    /.gal-item.top-gal
-    /  .fileupload-button.gal-upload-holder
-    /    = link_to I18n.t(:upload, :scope => [:ckeditor, :buttons]), 'javascript:void(0)', :class => "add"
+  .well#fileupload.gal-holder
+    .col-lg-12
+      div.pull-left
+        h3.title
+          | Thumbnail Gallery
+      .btn-group.pull-right
+        a#list.btn.btn-default.btn-sm href="#"
+          span.glyphicon.glyphicon-th-list
+          | List
+        a#grid.btn.btn-default.btn-sm href="#"
+          span.glyphicon.glyphicon-th
+          | Grid
+        .gal-item.pull-right.gal-item-upload
+          .fileupload-button.gal-upload-holder.btn.btn-default.btn-sm
+            = link_to I18n.t(:upload, :scope => [:ckeditor, :buttons]), 'javascript:void(0)', :class => "add"
+
     div.clear
-    div.box
-      .fileupload-list.row data-endless="true"
-        .col-lg-12
-          div.col-lg-9
-            h1.page-header
-              | Thumbnail Gallery
-          div.col-lg-3.right
-            .gal-item
-              .fileupload-button.gal-upload-holder
-                = link_to I18n.t(:upload, :scope => [:ckeditor, :buttons]), 'javascript:void(0)', :class => "add"
-        .col-lg-12.picture_container.panel.panel-default
-          div.panel-body
-            = render :partial => 'ckeditor/shared/asset', :collection => @pictures.scoped
-      - unless @pictures.last_page?
-        .pagination
-          = link_to I18n.t("ckeditor.buttons.next"), ckeditor.pictures_path(params.merge(:page => @pictures.next_page)), :class => "next", :rel => "next"
-      javascript:
-        #{Ckeditor::Utils.js_fileuploader('image')}
+    .fileupload-list.row data-endless="true"
+      #products.row.list-group.col-lg-12.picture_container
+          = render :partial => 'ckeditor/shared/asset', :collection => @pictures.scoped
+    - unless @pictures.last_page?
+      .pagination
+        = link_to I18n.t("ckeditor.buttons.next"), ckeditor.pictures_path(params.merge(:page => @pictures.next_page)), :class => "next", :rel => "next"
+    javascript:
+      #{Ckeditor::Utils.js_fileuploader('image')}

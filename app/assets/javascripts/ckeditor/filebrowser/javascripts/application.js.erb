@@ -1,44 +1,48 @@
 $.QueryString = (function(a) {
-  if (a == "") return {};
-  var b = {};
-  for (var i = 0; i < a.length; ++i)
-  {
-    var p=a[i].split('=');
-    if (p.length != 2) continue;
-    b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
-  }
-  return b;
+    if (a == "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i)
+    {
+        var p=a[i].split('=');
+        if (p.length != 2) continue;
+        b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
 })(window.location.search.substr(1).split('&'))
 
 $(document).ready(function(){
-  var selector = "div.col-lg-12.picture_container  .panel-body";
+    var selector = "div.col-lg-12.picture_container";
 
-  $(document)
-    .on('mouseover', selector, function(e){
-      $(this).addClass('hover');
-    })
-    .on('mouseout', selector, function(e){
-      $(this).removeClass('hover');
-    })
-    .on('click', selector, function(e){
-      var url = $(this).parents('div.gal-item').data('url');
-      CKEDITOR.tools.callFunction(CKEditorFuncNum, url);
-      window.close();
+    $(document)
+            .on('mouseover', selector, function(e){
+                $(this).addClass('hover');
+            })
+            .on('mouseout', selector, function(e){
+                $(this).removeClass('hover');
+            })
+            .on('click', selector, function(e){
+                var url = $(this).parents('div.gal-item').data('url');
+                CKEDITOR.tools.callFunction(CKEditorFuncNum, url);
+                window.close();
+            });
+
+    $(document).on('ajax:complete', "div.gal-item a.gal-del", function(xhr, status){
+        $(this).parents('div.gal-item').remove();
     });
 
-  $(document).on('ajax:complete', "div.gal-item a.gal-del", function(xhr, status){
-    $(this).parents('div.gal-item').remove();
-  });
+    var endlessScroll = $.endlessScroll({
+        container: ".fileupload-list",
+        entity: ".gal-item.item.col-xs-4.col-lg-4",
+        scrollPadding: 100
+    });
 
-  var endlessScroll = $.endlessScroll({
-    container: ".fileupload-list",
-    entity: ".gal-item.col-lg-4.thumb",
-    scrollPadding: 100
-  });
+    // Don't listen events first second
+    endlessScroll.scrollModule.unbind();
+    window.setTimeout(function() { endlessScroll.scrollModule.bind();}, 1000);
 
-  // Don't listen events first second
-  endlessScroll.scrollModule.unbind();
-  window.setTimeout(function() { endlessScroll.scrollModule.bind();}, 1000);
+    //list and grid proper working
+    $('#list').click(function(event){event.preventDefault();$('#products .item').addClass('list-group-item');});
+    $('#grid').click(function(event){event.preventDefault();$('#products .item').removeClass('list-group-item');$('#products .item').addClass('grid-group-item');});
 });
 
 // Collection of all instances on page
@@ -65,7 +69,7 @@ qq.FileUploaderInput = function(o){
             button: 'fileupload-button',
             drop: 'fileupload-drop-area',
             dropActive: 'fileupload-drop-area-active',
-            list: 'fileupload-list div.col-lg-12.picture_container .panel-body',
+            list: 'fileupload-list div.col-lg-12.picture_container',
             preview: 'fileupload-preview',
 
             file: 'fileupload-file',
@@ -104,7 +108,7 @@ qq.extend(qq.FileUploaderInput.prototype, {
     _find: function(parent, type){
         var element = qq.getByClass(parent, this._options.classes[type])[0];
         if (!element){
-          alert(type);
+            alert(type);
             throw new Error('element not found ' + type);
         }
 
@@ -112,7 +116,7 @@ qq.extend(qq.FileUploaderInput.prototype, {
     },
     _setupDragDrop: function(){
         var self = this,
-            dropArea = this._find(this._element, 'drop');
+                dropArea = this._find(this._element, 'drop');
 
         var dz = new qq.UploadDropZone({
             element: dropArea,
@@ -180,9 +184,11 @@ qq.extend(qq.FileUploaderInput.prototype, {
 
             asset.size = this._formatSize(asset.size);
             asset.controller = (asset.type !== undefined && asset.type.toLowerCase() == "ckeditor::picture" ? "pictures" : "attachment_files");
+            asset.filename = this._formatFileName(asset.filename);
 
             $(item).replaceWith($(this._options.template_id).tmpl(asset));
-            $(item).addClass("col-lg-4");
+
+            console.log( $(item));
         } else {
             qq.addClass(item, this._classes.fail);
         }
@@ -190,28 +196,31 @@ qq.extend(qq.FileUploaderInput.prototype, {
     },
     _addToList: function(id, fileName){
         if (this._listElement) {
-          if (this._options.multiple === false) {
-            $(this._listElement).empty();
-          }
+            if (this._options.multiple === false) {
+                $(this._listElement).empty();
+            }
 
-          var asset = {
-            id: 0,
-            filename: this._formatFileName(fileName),
-            size: 0,
-            format_created_at: '',
-            url_content: "#",
-            controller: "assets",
-            url_thumb: "<%= asset_path('ckeditor/filebrowser/images/preloader.gif') %>"
-          };
+            var asset = {
+                id: 0,
+                filename: this._formatFileName(fileName),
+                size: 0,
+                format_created_at: '',
+                url_content: "#",
+                controller: "assets",
+                url_thumb: "<%= asset_path('ckeditor/filebrowser/images/preloader.gif') %>"
+            };
 
-          var item = $(this._options.template_id)
-            .tmpl(asset)
-            .attr('qqfileid', id)
-            .prependTo( this._listElement );
+            console.log(asset);
 
-          item.find('div.img').addClass('preloader');
+            var item = $(this._options.template_id)
+                    .tmpl(asset)
+                    .attr('qqfileid', id)
+                    .prependTo( this._listElement );
 
-          this._bindCancelEvent(item);
+            $(item).addClass("item col-xs-4 col-lg-4");
+            item.find('div.img').addClass('preloader');
+
+            this._bindCancelEvent(item);
         }
     },
     _getItemByFileId: function(id){
@@ -222,13 +231,13 @@ qq.extend(qq.FileUploaderInput.prototype, {
      **/
     _bindCancelEvent: function(element){
         var self = this,
-            item = $(element);
+                item = $(element);
 
         item.find('a.' + this._classes.cancel).bind('click', function(e){
-          self._handler.cancel( item.attr('qqfileid') );
-          item.remove();
-          qq.preventDefault(e);
-          return false;
+            self._handler.cancel( item.attr('qqfileid') );
+            item.remove();
+            qq.preventDefault(e);
+            return false;
         });
     }
 });

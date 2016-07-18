@@ -5,10 +5,23 @@
  *= require_self
  *= require bootstrap/css/bootstrap.min.css
  *= require ckeditor/filebrowser/stylesheets/uploader.css
+ *= require ckeditor/gallary
 */
 div.clear {
   clear:both;
 }
 .thumb {
   margin-bottom: 30px;
+}
+.panel-heading h3,.container .well .pull-left h3.title {
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+  line-height: normal;
+  width: 75%;
+;
+  font-size:30px;
+}
+.gal-item.pull-right.gal-item-upload {
+  height:40px;
 }
