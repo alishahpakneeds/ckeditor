@@ -5,6 +5,17 @@
         h3.title
           | Thumbnail Gallery
       .btn-group.pull-right
+        .col-md-6.search-bar
+          form[action=""]
+            #adv-search.input-group
+              input type="hidden" name="CKEditor" value="#{params['CKEditor']}" /
+              input type="hidden" name="CKEditorFuncNum" value="#{params['CKEditorFuncNum']}" /
+              input type="hidden" name="langCode" value="#{params['langCode']}" /
+              input.form-control placeholder=("Search for Images") type="text"  name="q" /
+              .input-group-btn
+                .btn-group role="group"
+                  button.btn.btn-primary type="submit"
+                    span.glyphicon.glyphicon-search aria-hidden="true"
         a#list.btn.btn-default.btn-sm href="#"
           span.glyphicon.glyphicon-th-list
           | List
@@ -18,7 +29,7 @@
     div.clear
     .fileupload-list.row data-endless="true"
       #products.row.list-group.col-lg-12.picture_container
-          = render :partial => 'ckeditor/shared/asset', :collection => @pictures.scoped
+          = render :partial => 'ckeditor/shared/asset'
     - unless @pictures.last_page?
       .pagination
         = link_to I18n.t("ckeditor.buttons.next"), ckeditor.pictures_path(params.merge(:page => @pictures.next_page)), :class => "next", :rel => "next"

@@ -20,4 +20,14 @@ module Ckeditor::ApplicationHelper
       content
     end
   end
+
+  def fetched_picture_ids(pictures)
+    pictures_ids  = []
+    pictures.each  do |pic|
+      unless pic.data.present?
+        pictures_ids << pic.id
+      end
+    end
+    pictures_ids
+  end
 end

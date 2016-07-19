@@ -18,6 +18,10 @@ module Ckeditor
         def image_file_types
           @image_file_types ||= Ckeditor.image_file_types.map(&:to_s)
         end
+
+        def picture_model_attribute
+          @picture_model_attribute ||= Ckeditor.picture_model_attribute
+        end
       end
 
       def url(*attrs)

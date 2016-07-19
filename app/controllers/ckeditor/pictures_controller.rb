@@ -1,9 +1,13 @@
 class Ckeditor::PicturesController < Ckeditor::ApplicationController
   skip_before_action :verify_authenticity_token, only: :create
+  include Ckeditor::ApplicationHelper
 
   def index
     @pictures = Ckeditor.picture_adapter.find_all(ckeditor_pictures_scope)
     @pictures = Ckeditor::Paginatable.new(@pictures).page(params[:page])
+    #Other model
+    @rest_of_images_groups = Image.where(['id IN (?)',fetched_picture_ids(@pictures.scoped)]).group_by(&:id)
+
 
     respond_to do |format|
       format.html { render :layout => @pictures.first_page? }
@@ -12,6 +16,8 @@ class Ckeditor::PicturesController < Ckeditor::ApplicationController
 
   def create
     @picture = Ckeditor.picture_model.new
+
+
     respond_with_asset(@picture)
   end
 

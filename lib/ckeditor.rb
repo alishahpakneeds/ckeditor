@@ -91,9 +91,16 @@ module Ckeditor
   @@picture_model = nil
   @@attachment_file_model = nil
 
+  #Model Class variable that save tthe
+  @@picture_model_attribute  = nil
+
   # Configurable parent controller
   mattr_accessor :parent_controller
   @@parent_controller = 'ApplicationController'
+
+
+  mattr_accessor :picture_model_attribute
+  @@picture_model_attribute = nil
 
   # Default way to setup Ckeditor. Run rails generate ckeditor to create
   # a fresh initializer with all configuration values.
@@ -155,6 +162,7 @@ module Ckeditor
     @@picture_model_class = nil
     @@picture_model = value
   end
+
 
   def self.picture_adapter
     picture_model.to_adapter

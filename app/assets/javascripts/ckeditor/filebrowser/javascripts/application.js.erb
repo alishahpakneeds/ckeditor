@@ -11,7 +11,7 @@ $.QueryString = (function(a) {
 })(window.location.search.substr(1).split('&'))
 
 $(document).ready(function(){
-    var selector = "div.col-lg-12.picture_container";
+    var selector = "div.col-lg-12.picture_container .img.thumbnail";
 
     $(document)
             .on('mouseover', selector, function(e){
@@ -21,6 +21,7 @@ $(document).ready(function(){
                 $(this).removeClass('hover');
             })
             .on('click', selector, function(e){
+
                 var url = $(this).parents('div.gal-item').data('url');
                 CKEDITOR.tools.callFunction(CKEditorFuncNum, url);
                 window.close();
@@ -219,6 +220,7 @@ qq.extend(qq.FileUploaderInput.prototype, {
 
             $(item).addClass("item col-xs-4 col-lg-4");
             item.find('div.img').addClass('preloader');
+            $("a#grid").trigger("click");
 
             this._bindCancelEvent(item);
         }

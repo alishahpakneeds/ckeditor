@@ -7,7 +7,15 @@ module Ckeditor
       @request = request
       @params = request.params
 
+
+      if Ckeditor.picture_model_attribute.present?
+        # binding.pry
+        # @asset[Ckeditor.picture_model_attribute] = Ckeditor::Http.normalize_param(file, @request)
+      else
+
+      end
       @asset.data = Ckeditor::Http.normalize_param(file, @request)
+
     end
 
     def json?

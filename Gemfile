@@ -6,6 +6,7 @@ gem 'rails', '4.2.7'
 
 platforms :ruby do
   gem 'sqlite3'
+  gem 'active_record_union'
 
   group :development do
     gem 'unicorn', '~> 4.0.1'
@@ -34,4 +35,6 @@ platforms :ruby do
     gem 'mongoid-paperclip', require: 'mongoid_paperclip'
     gem 'carrierwave-mongoid', require: 'carrierwave/mongoid'
   end
+
+
 end
