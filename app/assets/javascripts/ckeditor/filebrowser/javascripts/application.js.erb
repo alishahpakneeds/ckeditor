@@ -28,7 +28,22 @@ $(document).ready(function(){
             });
 
     $(document).on('ajax:complete', "div.gal-item a.gal-del", function(xhr, status){
-        $(this).parents('div.gal-item').remove();
+        if ($(this).parents('div.gal-item').hasClass("other_system")){
+            alert("You cannot delete images that uploaded from other system");
+            return false;
+        }
+        else {
+            $(this).parents('div.gal-item').remove();
+        }
+
+    });
+
+    $( document ).ajaxError(function( event, jqxhr, settings, thrownError ) {
+
+        if(jqxhr['responseText'].search("No route matches [DELETE]")!=-1){
+            alert("You cannot delete images that uploaded from other system");
+            window.location.reload();
+        }
     });
 
     var endlessScroll = $.endlessScroll({
