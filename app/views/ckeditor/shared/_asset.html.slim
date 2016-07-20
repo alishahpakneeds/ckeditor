@@ -7,7 +7,8 @@
 
   /-------- content html---------------------------/
   = content_tag(:div, :id => dom_id(asset), :class => "gal-item item col-xs-4 col-lg-4 #{other_system_image}", :"data-url" => image_path(asset.url_content)) do
-    = link_to image_tag('ckeditor/filebrowser/images/gal_del.png', :title => I18n.t('ckeditor.buttons.delete')), polymorphic_path(asset, :format => :json),:remote => true,:method => :delete,:data => {:confirm => t('ckeditor.confirm_delete')},:class => "fileupload-cancel gal-del"
+    - unless other_system_image.present?
+        = link_to image_tag('ckeditor/filebrowser/images/gal_del.png', :title => I18n.t('ckeditor.buttons.delete')), polymorphic_path(asset, :format => :json),:remote => true,:method => :delete,:data => {:confirm => t('ckeditor.confirm_delete')},:class => "fileupload-cancel gal-del"
     .fileupload-file.gal-inner-holder
       .img.thumbnail
         = image_tag(asset.url_thumb, :title => asset.filename,:class=>'group list-group-image')
