@@ -7,6 +7,7 @@ module CkEditorConcern
 
   included do
     self.inheritance_column = nil
+    before_save :save_ck_editor_type
   end
 
   def url_content
@@ -38,6 +39,11 @@ module CkEditorConcern
   def size
     # Following is an example according to your attribute you can set
     # image_file_size
+  end
+
+  #Before save method that will allow all those picutres who saved from  list view of ckeditor
+  def save_ck_editor_type
+    self.type  = 'Ckeditor::Picture'
   end
 
 end
