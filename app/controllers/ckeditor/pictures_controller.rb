@@ -4,6 +4,15 @@ class Ckeditor::PicturesController < Ckeditor::ApplicationController
 
   def index
     @pictures = Ckeditor.picture_adapter.find_all(ckeditor_pictures_scope)
+    if params[:q].present?
+      if Ckeditor.picture_model_attribute.present?
+        @pictures = @pictures.where(["data_file_name LIKE ? OR  #{Ckeditor.picture_model_attribute.to_s}_file_name LIKE ? ","%#{params[:q]}%","%#{params[:q]}%"])
+      else
+        @pictures = @pictures.where(['data_file_name LIKE ? ',"%#{params[:q]}%"])
+      end
+
+    end
+
     @pictures = Ckeditor::Paginatable.new(@pictures).page(params[:page])
 
     #Other picures that not saved from ckeditor

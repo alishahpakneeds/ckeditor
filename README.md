@@ -99,6 +99,9 @@ Ckeditor.setup do |config|
 
   #config.system_attachment_model { YourCustomModelForAttachment } eg ,but your table name should be same for Ckeditor::Picture
   config.system_attachment_model { Image }
+
+   #Following column is very important for search if you are using both your own attachment and ck attachment
+   config.picture_model_attribute = :image #e.g my attahment model attribute
 end
 ```
 
