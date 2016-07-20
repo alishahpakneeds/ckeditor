@@ -31,7 +31,13 @@ Ckeditor.setup do |config|
 
   # Asset model classes
   # config.picture_model { Ckeditor::Picture }
+
+  # new added its a custom attribute (its under development original gem is using data , we will use image if we have already attachment model)
+  # config.picture_model_attribute = :data
   # config.attachment_file_model { Ckeditor::AttachmentFile }
+
+  #new added feature because pictures that uploaded from other system rather than ck it wont be shown , we added to show those pictures here
+  # config.system_attachment_model { Ckeditor::Picture }
 
   # Paginate assets
   # By default: 24

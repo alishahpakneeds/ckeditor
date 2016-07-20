@@ -5,8 +5,10 @@ class Ckeditor::PicturesController < Ckeditor::ApplicationController
   def index
     @pictures = Ckeditor.picture_adapter.find_all(ckeditor_pictures_scope)
     @pictures = Ckeditor::Paginatable.new(@pictures).page(params[:page])
-    #Other model
-    @rest_of_images_groups = Image.where(['id IN (?)',fetched_picture_ids(@pictures.scoped)]).group_by(&:id)
+
+    #Other picures that not saved from ckeditor
+
+    @rest_of_images_groups = Ckeditor.system_attachment_model.where(['id IN (?)',fetched_picture_ids(@pictures.scoped)]).group_by(&:id)
 
 
     respond_to do |format|

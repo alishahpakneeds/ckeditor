@@ -91,6 +91,9 @@ module Ckeditor
   @@picture_model = nil
   @@attachment_file_model = nil
 
+  #Addional Model attachment
+  @@system_attachment_model = nil
+
   #Model Class variable that save tthe
   @@picture_model_attribute  = nil
 
@@ -101,6 +104,9 @@ module Ckeditor
 
   mattr_accessor :picture_model_attribute
   @@picture_model_attribute = nil
+
+
+
 
   # Default way to setup Ckeditor. Run rails generate ckeditor to create
   # a fresh initializer with all configuration values.
@@ -163,10 +169,33 @@ module Ckeditor
     @@picture_model = value
   end
 
-
   def self.picture_adapter
     picture_model.to_adapter
   end
+
+  def self.system_attachment_model(&block)
+    if block_given?
+      self.system_attachment_model = block
+    else
+      @@system_attachment_model_class ||= begin
+        if @@system_attachment_model.respond_to? :call
+          @@system_attachment_model.call
+        else
+          @@system_attachment_model || Ckeditor::Picture
+        end
+      end
+    end
+  end
+
+  def self.system_attachment_model=(value)
+    @@system_attachment_model_class= nil
+    @@system_attachment_model = value
+  end
+
+  def self.system_attachment_adapter
+    system_attachment_model.to_adapter
+  end
+
 
   def self.attachment_file_model(&block)
     if block_given?

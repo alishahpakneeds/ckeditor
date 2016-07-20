@@ -28,4 +28,87 @@ gem 'ckeditor', , :git => 'https://github.com/alishahpakneeds/ckeditor.git',:bra
 
 Initialy it has the support of  [ckeditor as normal](https://github.com/galetahub/ckeditor).but in future its going to be reponsive interfaces , specially photo gallery
 
+#### After these configuration (ActiveRecord + paperclip or ActiveRecord + carrierwave)
 
+```
+   rails generate ckeditor:install --orm=active_record --backend=paperclip
+   rails generate ckeditor:install --orm=active_record --backend=carrierwave
+
+```
+
+And if you set the your config variable in
+```ruby
+#new added feature because pictures that uploaded from other system rather than ck it wont be shown , we added to show those pictures here,
+#Go to to Your Your
+# in app/models/ckeditor/asset.rb , add the following line
+class Ckeditor::Asset < ActiveRecord::Base
+    self.table_name = 'your_custom_table_name'
+end
+```
+#One More thing your your custom table should contain following columns
+# Create a migration
+```
+    rails g migration add_ck_editor_columns in custom table
+```
+```ruby
+#eg
+
+class AddCkEditorColumns < ActiveRecord::Migration
+  def up
+    add_column :images,:data_file_name,:string
+    add_column :images,:data_content_type,:string
+    add_column :images,:data_file_size,:integer
+    add_column :images,:assetable_id,:integer
+    add_column :images,:assetable_type,:string, limit: 30
+    add_column :images,:type,:string, limit: 30
+    add_column :images,:width,:integer
+    add_column :images,:height,:integer
+
+
+
+
+    # add_index :images, ["assetable_type", "type", "assetable_id"], name: "idx_image_assetable_type"
+    # add_index :images, ["assetable_type", "assetable_id"], name: "idx_image_assetable"
+
+  end
+
+  def down
+
+    remove_column :images,:data_file_name
+    remove_column :images,:data_content_type
+    remove_column :images,:data_file_size
+    remove_column :images,:assetable_id
+    remove_column :images,:assetable_type
+    remove_column :images,:type
+    remove_column :images,:width
+    remove_column :images,:height
+
+    # remove_index :images,  column: ["assetable_type", "type", "assetable_id"],name:"idx_image_assetable_type"
+    # remove_index :images,  column: ["assetable_type", "assetable_id"],name: "idx_image_assetable"
+  end
+end
+
+
+```
+
+
+```ruby
+#Now go to following file
+# in config/initializers/ckeditor.rb
+Ckeditor.setup do |config|
+
+  #config.system_attachment_model { YourCustomModelForAttachment } eg ,but your table name should be same for Ckeditor::Picture
+  config.system_attachment_model { Image }
+end
+```
+
+#Now in Your custom model add following line for concern
+
+```ruby
+  #YourCustomModelForAttachment
+  class Image <  ActiveRecord::Base
+
+    include CkEditorConcern
+
+  end
+```
