@@ -39,7 +39,11 @@ module Ckeditor
       def create_models
         [:asset, :picture, :attachment_file].each do |filename|
           template "#{generator_dir}/ckeditor/#{filename}.rb",
-                   File.join('app/models', ckeditor_dir, "#{filename}.rb")
+                   File.join('app/models', ckeditor_dir, "#{filename}.rb",)
+        end
+
+        [:ck_editor_concern].each do |filename|
+          template "#{generator_dir}/ckeditor/#{filename}.rb", File.join('app/models', ckeditor_concern_dir, "#{filename}.rb",)
         end
 
         if backend_carrierwave?
@@ -70,6 +74,10 @@ module Ckeditor
 
       def ckeditor_dir
         'ckeditor'
+      end
+
+      def ckeditor_concern_dir
+        'concerns'
       end
 
       def generator_dir
