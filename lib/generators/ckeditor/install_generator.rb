@@ -43,7 +43,7 @@ module Ckeditor
         end
 
         [:ck_editor_concern].each do |filename|
-          template "#{generator_dir}#/{ckeditor_concern_dir}/#{filename}.rb", File.join('app/models', ckeditor_concern_dir, "#{filename}.rb",)
+          template "#{generator_dir}/#{ckeditor_concern_dir}/#{filename}.rb", File.join('app/models', ckeditor_concern_dir, "#{filename}.rb",)
         end
 
         if backend_carrierwave?
